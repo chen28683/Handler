@@ -49,15 +49,15 @@ public final class MessageQueue {
     // carries the token.
     private int mNextBarrierToken;
 
-    private native static int nativeInit();
-
-    private native static void nativeDestroy(int ptr);
-
-    private native static void nativePollOnce(int ptr, int timeoutMillis);
-
-    private native static void nativeWake(int ptr);
-
-    private native static boolean nativeIsIdling(int ptr);
+//    private native static int nativeInit();
+//
+//    private native static void nativeDestroy(int ptr);
+//
+//    private native static void nativePollOnce(int ptr, int timeoutMillis);
+//
+//    private native static void nativeWake(int ptr);
+//
+//    private native static boolean nativeIsIdling(int ptr);
 
     /**
      * Callback interface for discovering when a thread is going to block
@@ -108,7 +108,7 @@ public final class MessageQueue {
 
     MessageQueue(boolean quitAllowed) {
         mQuitAllowed = quitAllowed;
-        mPtr = nativeInit();
+       // mPtr = nativeInit();
     }
 
     @Override
@@ -123,10 +123,10 @@ public final class MessageQueue {
     // Disposes of the underlying message queue.
     // Must only be called on the looper thread or the finalizer.
     private void dispose() {
-        if (mPtr != 0) {
-            nativeDestroy(mPtr);
-            mPtr = 0;
-        }
+//        if (mPtr != 0) {
+//            nativeDestroy(mPtr);
+//            mPtr = 0;
+//        }
     }
 
     Message next() {
@@ -136,7 +136,7 @@ public final class MessageQueue {
             // We can assume mPtr != 0 because the loop is obviously still
             // running.
             // The looper will not call this method after the loop quits.
-            nativePollOnce(mPtr, nextPollTimeoutMillis);
+//            nativePollOnce(mPtr, nextPollTimeoutMillis);
 
             synchronized (this) {
                 // Try to retrieve the next message. Return if found.
@@ -252,7 +252,7 @@ public final class MessageQueue {
             }
 
             // We can assume mPtr != 0 because mQuitting was previously false.
-            nativeWake(mPtr);
+         //   nativeWake(mPtr);
         }
     }
 
@@ -312,7 +312,7 @@ public final class MessageQueue {
             // If the loop is quitting then it is already awake.
             // We can assume mPtr != 0 when mQuitting is false.
             if (needWake && !mQuitting) {
-                nativeWake(mPtr);
+             //   nativeWake(mPtr);
             }
         }
     }
@@ -366,7 +366,7 @@ public final class MessageQueue {
 
             // We can assume mPtr != 0 because mQuitting is false.
             if (needWake) {
-                nativeWake(mPtr);
+             //   nativeWake(mPtr);
             }
         }
         return true;
@@ -415,7 +415,7 @@ public final class MessageQueue {
     private boolean isIdlingLocked() {
         // If the loop is quitting then it must not be idling.
         // We can assume mPtr != 0 when mQuitting is false.
-        return !mQuitting && nativeIsIdling(mPtr);
+        return !mQuitting ;//&& nativeIsIdling(mPtr);
     }
 
     void removeMessages(Handler h, int what, Object object) {
